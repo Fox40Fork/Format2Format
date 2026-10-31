@@ -76,7 +76,7 @@ internal sealed partial class MainForm : Form
         BuildList();
         var bottomBar = BuildBottomBar();
         BuildStatusStrip();
-        InitializeDragDrop();
+        InitializeDragDrop(bottomBar);
 
         // Docking is applied from the last-added control to the first, so the order here is
         // outermost last: menu > toolbar at the top, status strip > bottom bar at the bottom, list fills the rest.
