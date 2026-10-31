@@ -49,6 +49,7 @@ internal sealed partial class MainForm : Form
 
     private CancellationTokenSource? _conversion;
     private bool _closeWhenConversionEnds;
+    private bool _columnsScaled;
 
     public MainForm(IEnumerable<string> startupFiles)
     {
@@ -373,12 +374,15 @@ internal sealed partial class MainForm : Form
         base.OnHandleCreated(e);
 
         // Initial column widths are in 96-DPI units; scale them for the current monitor once.
-        if (DeviceDpi != 96)
+        // (ListView doesn't scale column widths itself, and the handle can be recreated later.)
+        if (!_columnsScaled && DeviceDpi != 96)
         {
             float factor = DeviceDpi / 96f;
             foreach (var column in new[] { _nameColumn, _formatColumn, _sizeColumn })
                 column.Width = (int)Math.Round(column.Width * factor);
         }
+
+        _columnsScaled = true;
     }
 
     // ───────────────────────────── File list ─────────────────────────────
