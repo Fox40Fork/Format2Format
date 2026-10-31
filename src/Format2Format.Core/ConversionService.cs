@@ -12,6 +12,9 @@ public sealed class ConversionService
 
     private static readonly uint[] IconSizes = [256, 128, 64, 48, 32, 16];
 
+    /// <summary>Version of the underlying image library, for the About box.</summary>
+    public static string EngineVersion => $"ImageMagick {MagickNET.ImageMagickVersion.Split(' ').ElementAtOrDefault(1) ?? MagickNET.ImageMagickVersion} (Magick.NET {MagickNET.Version.Split(' ').LastOrDefault()})";
+
     /// <summary>
     /// Converts <paramref name="inputPath"/> to <paramref name="target"/> and writes the result into
     /// <paramref name="outputDirectory"/> as "original name + new extension" (" (1)", " (2)", ... if taken).
@@ -26,12 +29,12 @@ public sealed class ConversionService
             if (!File.Exists(inputPath))
                 return ConversionResult.Fail(inputPath, "File not found");
 
-            if (!ImageFormats.HasSupportedExtension(inputPath))
-                return ConversionResult.Fail(inputPath, $"Unsupported file type ({DescribeExtension(inputPath)})");
-
+            // The content decides, so "photo.jpg_large" or a PNG saved as ".jpg" still converts.
             var sourceFormat = FormatDetector.DetectFile(inputPath);
             if (sourceFormat == InputFormat.Unknown)
-                return ConversionResult.Fail(inputPath, "Not a supported image (the file content isn't a recognized image format)");
+            {
+                return ConversionResult.Fail(inputPath, DescribeUnrecognized(inputPath));
+            }
 
             using var source = Read(inputPath, sourceFormat);
             if (source.Count == 0)
@@ -270,10 +273,13 @@ public sealed class ConversionService
 
     private static int ClampQuality(int quality) => Math.Clamp(quality, 1, 100);
 
-    private static string DescribeExtension(string path)
+    /// <summary>Reason shown when a file's content isn't an image we can read.</summary>
+    public static string DescribeUnrecognized(string path)
     {
         string ext = Path.GetExtension(path);
-        return string.IsNullOrEmpty(ext) ? "no extension" : ext.ToLowerInvariant();
+        if (ImageFormats.HasSupportedExtension(path))
+            return $"Not a valid {ext.TrimStart('.').ToUpperInvariant()} file";
+        return string.IsNullOrEmpty(ext) ? "Unsupported file type (no extension)" : $"Unsupported file type ({ext.ToLowerInvariant()})";
     }
 
     internal static string DescribeError(Exception ex) => ex switch

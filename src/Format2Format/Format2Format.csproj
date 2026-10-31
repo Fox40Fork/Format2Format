@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <RootNamespace>Format2Format</RootNamespace>
+    <AssemblyName>Format2Format</AssemblyName>
+    <AssemblyTitle>Format2Format image converter</AssemblyTitle>
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <ApplicationVisualStyles>true</ApplicationVisualStyles>
+    <ApplicationUseCompatibleTextRendering>false</ApplicationUseCompatibleTextRendering>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Format2Format.Core\Format2Format.Core.csproj" />
+  </ItemGroup>
+
+</Project>

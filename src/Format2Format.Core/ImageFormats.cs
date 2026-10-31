@@ -68,7 +68,10 @@ public static class ImageFormats
 
     public static bool SupportsAnimation(OutputFormat format) => format is OutputFormat.Gif or OutputFormat.Webp;
 
-    /// <summary>Text for the Format column. JPEG files named .jfif are shown as JFIF since that's what users know them as.</summary>
+    /// <summary>
+    /// Text for the Format column, based on the detected content. JPEG files named .jfif are shown as JFIF
+    /// since that's what users know them as. Unrecognized content shows a dash.
+    /// </summary>
     public static string GetDisplayName(InputFormat format, string? path = null)
     {
         if (format == InputFormat.Jpeg && path != null &&
@@ -79,7 +82,7 @@ public static class ImageFormats
 
         return format switch
         {
-            InputFormat.Unknown => path is null ? "?" : Path.GetExtension(path).TrimStart('.').ToUpperInvariant(),
+            InputFormat.Unknown => "—",
             _ => format.ToString().ToUpperInvariant(),
         };
     }

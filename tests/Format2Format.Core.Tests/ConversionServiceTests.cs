@@ -66,6 +66,24 @@ public sealed class ConversionServiceTests : IDisposable
     }
 
     [Fact]
+    public void AcceptsImagesWithOddExtensions()
+    {
+        // Browsers sometimes save files as "photo.jpg_large" or without an extension at all.
+        string input = TestImages.WriteOpaque(_temp.InputFile("photo.jpg_large"), MagickFormat.Jpeg);
+
+        var result = _service.Convert(input, OutputFormat.Png, _temp.Output);
+
+        Assert.True(result.Success, result.Error);
+        Assert.Equal("photo.png", Path.GetFileName(result.OutputPath));
+    }
+
+    [Fact]
+    public void EngineVersionIsReported()
+    {
+        Assert.Matches(@"^ImageMagick \d+\.\d+.* \(Magick\.NET \d+\.\d+", ConversionService.EngineVersion);
+    }
+
+    [Fact]
     public void NeverOverwritesExistingFiles()
     {
         string input = TestImages.WriteOpaque(_temp.InputFile("cat.png"), MagickFormat.Png);
@@ -192,7 +210,7 @@ public sealed class ConversionServiceTests : IDisposable
         var result = _service.Convert(input, OutputFormat.Jpg, _temp.Output);
 
         Assert.False(result.Success);
-        Assert.StartsWith("Not a supported image", result.Error);
+        Assert.Equal("Not a valid PNG file", result.Error);
     }
 
     [Fact]
