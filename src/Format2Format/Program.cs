@@ -13,7 +13,7 @@ internal static class Program
     [STAThread]
     private static int Main(string[] args)
     {
-        Log.Info($"Format2Format {Application.ProductVersion.Split('+')[0]} starting with {args.Length} argument(s)");
+        Log.Info($"Format2Format {Application.ProductVersion} starting with {args.Length} argument(s)");
 
         if (args.Length == 1 && args[0] is RegisterSwitch or UnregisterSwitch)
             return RunShellSwitch(args[0]);

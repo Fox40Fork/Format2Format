@@ -482,3 +482,8 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Installer output
+dist/
+# Keep the release publish profile (the default VS .gitignore excludes *.pubxml)
+!src/Format2Format/Properties/PublishProfiles/win-x64.pubxml

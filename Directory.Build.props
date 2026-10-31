@@ -4,6 +4,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <Version>1.0.0</Version>
+    <!-- Keep ProductVersion as plain "1.0.0" (no "+commit" suffix); the installer reads it from the exe. -->
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
     <Company>Format2Format</Company>
     <Product>Format2Format</Product>
     <Copyright>Copyright (c) 2026</Copyright>

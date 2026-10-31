@@ -622,7 +622,7 @@ internal sealed partial class MainForm : Form
 
     private void ShowAbout()
     {
-        string version = Application.ProductVersion.Split('+')[0];
+        string version = Application.ProductVersion;
         MessageBox.Show(this,
             $"{AppName} {version}\n" +
             "Converts images between formats. Works offline.\n\n" +
